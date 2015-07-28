@@ -102,12 +102,13 @@ WARNING
 
         topic("Preparing app for Rails asset pipeline")
 
-        puts Dir.entries(public_assets_folder)
-        puts Dir.entries(default_assets_cache)
         @cache.load public_assets_folder
         @cache.load default_assets_cache
 
         precompile.invoke(env: rake_env)
+
+        puts Dir.entries(public_assets_folder)
+        puts Dir.entries(default_assets_cache)
 
         if precompile.success?
           log "assets_precompile", :status => "success"
