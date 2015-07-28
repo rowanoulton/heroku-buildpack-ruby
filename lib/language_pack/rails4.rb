@@ -66,6 +66,29 @@ WARNING
     "tmp/cache/assets"
   end
 
+  def run_assets_purge_rake_task
+      instrument "rails4.run_assets_purge_rake_task" do
+          log("assets_purge") do
+              purge = rake.task("assets:clobber")
+              return true unless purge.is_defined?
+              purge.invoke(env: rake_env)
+
+              if purge.success?
+                  log "assets_purge", :status => "success"
+                  puts "Asset purge completed (#{"%.2f" % purge.time}s)"
+              else
+                purge_fail(purge.output)
+              end
+          end
+      end
+  end
+
+  def purge_fail(output)
+      log "assets_purge", :status => "failure"
+      msg = "Purging assets failed.\n"
+      error msg
+  end
+
   def run_assets_precompile_rake_task
     instrument "rails4.run_assets_precompile_rake_task" do
       log("assets_precompile") do

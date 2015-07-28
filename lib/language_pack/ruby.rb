@@ -93,6 +93,7 @@ class LanguagePack::Ruby < LanguagePack::Base
         post_bundler
         create_database_yml
         install_binaries
+        run_assets_purge_rake_task
         run_assets_precompile_rake_task
       end
       super
