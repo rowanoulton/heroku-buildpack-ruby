@@ -102,8 +102,10 @@ WARNING
 
         topic("Preparing app for Rails asset pipeline")
 
-        #@cache.load public_assets_folder
-        #@cache.load default_assets_cache
+        puts Dir.entries(public_assets_folder)
+        puts Dir.entries(default_assets_cache)
+        @cache.load public_assets_folder
+        @cache.load default_assets_cache
 
         precompile.invoke(env: rake_env)
 
@@ -111,12 +113,20 @@ WARNING
           log "assets_precompile", :status => "success"
           puts "Asset precompilation completed (#{"%.2f" % precompile.time}s)"
 
+          puts Dir.entries(public_assets_folder)
+          puts Dir.entries(default_assets_cache)
+
           puts "Cleaning assets"
           rake.task("assets:clean").invoke(env: rake_env)
 
+
           cleanup_assets_cache
-          #@cache.store public_assets_folder
-          #@cache.store default_assets_cache
+          @cache.store public_assets_folder
+          @cache.store default_assets_cache
+
+
+          puts Dir.entries(public_assets_folder)
+          puts Dir.entries(default_assets_cache)
         else
           precompile_fail(precompile.output)
         end
